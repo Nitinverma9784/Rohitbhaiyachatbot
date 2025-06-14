@@ -90,9 +90,13 @@ export default function LandingPage() {
               <Card className="relative bg-gray-800/50 border-purple-500/30 backdrop-blur-sm shadow-2xl">
                 <CardContent className="p-8">
                   <div className="text-center">
-                    <Avatar className="w-32 h-32 mx-auto mb-6 bg-gradient-to-r from-purple-600 to-blue-600 shadow-2xl">
-                      <AvatarFallback className="text-white text-4xl font-bold">RN</AvatarFallback>
-                    </Avatar>
+                  <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-purple-500/30 shadow-lg">
+  <img 
+    src="/img1.jpg" 
+    alt="Rohit Bhaiya" 
+    className="w-full h-full object-cover"
+  />
+</div>
                     <h3 className="text-2xl font-bold text-white mb-2">Rohit Negi</h3>
                     <p className="text-purple-300 mb-6">Your Coding Mentor</p>
                     <div className="grid grid-cols-2 gap-4">
@@ -152,9 +156,13 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl blur-2xl opacity-20"></div>
               <Card className="relative bg-gray-800/50 border-purple-500/30 backdrop-blur-sm shadow-2xl">
                 <CardContent className="p-8">
-                  <Avatar className="w-40 h-40 mx-auto mb-6 bg-gradient-to-r from-purple-600 to-blue-600 shadow-2xl">
-                    <AvatarFallback className="text-white text-5xl font-bold">RN</AvatarFallback>
-                  </Avatar>
+                <div className="rounded-2xl overflow-hidden border border-purple-500/30">
+      <img 
+        src="/img2.jpg" 
+        alt="Rohit Bhaiya teaching" 
+        className="w-full h-full object-cover"
+      />
+    </div>
                   <div className="text-center">
                     <h3 className="text-3xl font-bold text-white mb-2">Rohit Negi</h3>
                     <div className="flex flex-wrap justify-center gap-2 mb-4">
@@ -282,7 +290,7 @@ export default function LandingPage() {
             <p className="text-gray-400 mb-2">
               Copyright © 2025 Rohit Bhaiya Chatbot. Built with ❤️ for Indian developers.
             </p>
-            <p className="text-purple-400 font-medium">"Consistency is key Bhaiya!" - Rohit Negi</p>
+            <p className="text-purple-400 font-medium">"Consistency is key!" - Rohit Negi</p>
           </div>
         </div>
       </footer>

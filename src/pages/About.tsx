@@ -72,7 +72,13 @@ export default function AboutPage() {
           <div className="relative inline-block mb-8">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full blur-2xl opacity-30 animate-pulse"></div>
             <Avatar className="relative w-40 h-40 bg-gradient-to-r from-purple-600 to-blue-600 shadow-2xl">
-              <AvatarFallback className="text-white text-6xl font-bold">RN</AvatarFallback>
+              <AvatarFallback className="text-white text-6xl font-bold">
+              <img 
+        src="/img3.png" 
+        alt="Rohit Negi"
+        className="w-full h-full object-cover"
+      />
+              </AvatarFallback>
             </Avatar>
           </div>
           <h1 className="text-5xl lg:text-6xl font-bold text-white mb-4">Meet Rohit Negi</h1>
@@ -219,7 +225,13 @@ export default function AboutPage() {
               <Card className="relative bg-gray-800/50 border-purple-500/30 backdrop-blur-sm">
                 <CardContent className="p-8">
                   <Avatar className="w-48 h-48 mx-auto mb-6 bg-gradient-to-r from-purple-600 to-blue-600 shadow-2xl">
-                    <AvatarFallback className="text-white text-6xl font-bold">RN</AvatarFallback>
+                    <AvatarFallback className="text-white text-6xl font-bold">
+                    <img 
+            src="/img4.jpg" 
+            alt="Interview tips"
+            className="w-full h-full object-cover rounded-lg"
+          />
+                    </AvatarFallback>
                   </Avatar>
                   <div className="text-center">
                     <h3 className="text-3xl font-bold text-white mb-4">The Mentor Behind the Magic</h3>

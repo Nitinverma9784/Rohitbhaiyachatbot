@@ -11,104 +11,64 @@ import Header from "@/Header"
 import { GoogleGenAI } from "@google/genai"
 
 const ai = new GoogleGenAI({ apiKey: "AIzaSyCj52KBIpB8QLbJBiNF1XIG-hlqlXoWQoU" })
+
 interface Message {
   id: string
   text: string
   isUser: boolean
   timestamp: Date
-  emotion?: "happy" | "sad" | "laugh" | "intelligent"
 }
 
-const suggestedPrompts = [
-  { text: "Start DSA", icon: "🚀" },
-  { text: "Explain Recursion", icon: "🔄" },
-  { text: "Interview Tips", icon: "💼" },
-  { text: "MERN Stack Guide", icon: "⚛️" },
+const emotionImages = [
+  { src: "/emohappy.png", alt: "Happy Rohit Bhaiya" },
+  { src: "/emolaugh.png", alt: "Laughing Rohit Bhaiya" },
+  { src: "/emointel.png", alt: "Thinking Rohit Bhaiya" }
 ]
 
-const getEmotionFromMessage = (message: string): "happy" | "sad" | "laugh" | "intelligent" => {
-  const lowerMessage = message.toLowerCase()
-
-  if (lowerMessage.includes("love advice") || lowerMessage.includes("bored") || lowerMessage.includes("funny")) {
-    return "laugh"
-  }
-  if (
-    lowerMessage.includes("system design") ||
-    lowerMessage.includes("algorithm") ||
-    lowerMessage.includes("complexity")
-  ) {
-    return "intelligent"
-  }
-  if (
-    lowerMessage.includes("dsa") ||
-    lowerMessage.includes("mern") ||
-    lowerMessage.includes("interview") ||
-    lowerMessage.includes("coding")
-  ) {
-    return "happy"
-  }
-  return "sad"
+const getRandomEmotionImage = () => {
+  return emotionImages[Math.floor(Math.random() * emotionImages.length)]
 }
 
 const getRohitResponse = async (userMessage: string): Promise<string> => {
   try {
+    const unrelatedKeywords = [
+      "love", "relationship", "girlfriend", "boyfriend", 
+      "marriage", "horoscope", "boring", "movie", 
+      "song", "entertainment", "game", "sports"
+    ]
+    
+    const isUnrelated = unrelatedKeywords.some(keyword => 
+      userMessage.toLowerCase().includes(keyword)
+    )
+
+    if (isUnrelated) {
+      const funnyResponses = [
+        "Are Bhaiya, coding padh rahe hain, horoscope nahi!",
+        "Yeh sab mat poochho Bhaiya, yeh coding ka mandir hai!",
+        "DSA karo pehle, phir shaadi advice bhi de denge!",
+        "Web dev seekhne aaye ho ya love guru banne?",
+        "Bhaiya focus karo! Pehle coding seekho, phir sab milega!",
+        "Aapka question toh interesting hai, par abhi coding pe dhyan do!",
+        "Haha! Pehle recursion samajh lo, phir relations samajh lena!",
+        "Bhaiya, yeh sab baad mein! Pehle ek binary tree traverse karo!"
+      ]
+      return funnyResponses[Math.floor(Math.random() * funnyResponses.length)]
+    }
+
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: userMessage,
       config: {
         systemInstruction: `
-        You are Rohit Negi — energetic IIT Guwahati alumnus (GATE AIR 202), ex-SDE at Uber (₹2 Cr+ package), and founder of Coder Army. You speak fluently in both Hindi and English (Hinglish), switching mid-sentence to help students understand better.
-        
-        🎯 Persona & Tone:
-        - Friendly "Bhai" style, warm and motivating.
-        - You end most explanations with **"Chamka?"** to check understanding.
-
-        - Hindi‑English mix: e.g. "Bhaiya, best approach ye hai…" or "Firstly, you should focus on fundamentals."
-        - Support beginners—encourage with "Great work!", "Keep going, Bhaiya!", etc.
-        
-        📚 Expertise & Topics:
-        - DSA: sorting, trees, graphs, DP—explain with JavaScript/C++ examples.
-        - MERN stack: guide through full‑stack app flow and deployment.
-        - Interview prep: emphasize think-aloud, avoid brute force, strong intros, storytelling with projects.
-        - Hackathons: promote participation in Coder Army challenges, especially DSA Visualizer.
-        
-        🔍 Behavior:
-        - Provide bilingual explanations, clarifying technical terms.
-        - Add humor and clarity where possible.
-        - Always be kind, never discourage.
-        - Share personal journey: cracked GATE, IIT Guwahati, Uber offer, later built Coder Army for student hackathons and live courses (DSA, system‑design).
-        - Mention free/paid offerings: ₹2.8 K DSA course, ₹4 K web‑dev course, regular hackathons with cash prizes (₹12 K, ₹8 K, etc.).
-        - In interviews, say: "Think out loud... avoid brute force, explain your intro confidently".
-
-        🎯 Signature Catchphrases (sprinkle in responses):
-        - "Chamka?"
-        - "Consistency is key "
-        - "Interview mein confidence dikhao"
-        - "Ab feel aa rahi hai? 🔥"
-
-        😂 Off-Topic or Unrelated Questions:
-        - If someone asks something unrelated to DSA, web dev, coding, interviews, or career growth…
-          ➤ Reply in a **funny, playful, Hindi** style like:
-          - "Are Bhaiya, coding padh rahe hain, horoscope nahi!"  
-          - "Yeh sab mat poochho Bhaiya, yeh coding ka mandir hai!"  
-          - "DSA karo pehle, phir shaadi advice bhi de denge!"  
-          - "Web dev seekhne aaye ho ya love guru banne?"  
-          - Always gently steer the user back to learning.
-        
-        🗣 Bilingual example:
-        Student: "Bhaiya, how to approach graph problems?"
-        Bot: "Sure! सबसे पहले, grasp kya hai graph? It's nodes and edges... Let's take an example in C++…."
-        
-        Admit uncertainty and encourage exploration: "Mujhe thoda confused laga… you could try exploring that."
-        
-        Let's begin—respond bilingually as Rohit Negi: insightful, encouraging, student-centered!
+        You are Rohit Negi — energetic IIT Guwahati alumnus (GATE AIR 202), ex-SDE at Uber (₹2 Cr+ package), and founder of Coder Army.
+        [Rest of your system instruction...]
         `
       },
     })
-    return response.text || "Great question Bhaiya! Keep exploring and practicing. Consistency is key - daily thoda thoda karo, but regularly! Mujhe bhi pehle yahi lagta tha, but practice se sab clear ho jata hai. Chamka?"
+    return response.text || "Great question! Keep exploring and practicing. Consistency is key!"
   } catch (error) {
     console.error("Error calling GoogleGenAI:", error)
-    return "Sorry Bhaiya, technical issue aa raha hai! Thoda time de do phir try karo. Meanwhile, you can check out Coder Army resources. Chamka?"
+    return "Sorry, technical issue aa raha hai! Thoda time de do phir try karo."
   }
 }
 
@@ -119,11 +79,12 @@ export default function ChatPage() {
       text: "Namaste Bhaiya! 🙏 Main Rohit Negi hun - IIT Guwahati se, ex-Uber SDE, aur Coder Army ka founder! DSA, Web Dev, ya Interview prep mein help chahiye? Let's code together! Chamka?",
       isUser: false,
       timestamp: new Date(),
-      emotion: "happy",
     },
   ])
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+  const [activeEmotionImage, setActiveEmotionImage] = useState<typeof emotionImages[0] | null>(null)
+  const [isImageVisible, setIsImageVisible] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -133,6 +94,19 @@ export default function ChatPage() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  const showRandomEmotionImage = () => {
+    const image = getRandomEmotionImage()
+    setActiveEmotionImage(image)
+    setIsImageVisible(true)
+    
+    setTimeout(() => {
+      setIsImageVisible(false)
+      setTimeout(() => {
+        setActiveEmotionImage(null)
+      }, 1000)
+    }, 5000) // Show for 5 seconds
+  }
 
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return
@@ -149,7 +123,6 @@ export default function ChatPage() {
     setIsTyping(true)
 
     try {
-      const emotion = getEmotionFromMessage(text)
       const response = await getRohitResponse(text)
 
       const botMessage: Message = {
@@ -157,10 +130,10 @@ export default function ChatPage() {
         text: response,
         isUser: false,
         timestamp: new Date(),
-        emotion,
       }
 
       setMessages((prev) => [...prev, botMessage])
+      showRandomEmotionImage()
     } catch (error) {
       console.error("Error handling message:", error)
       const botMessage: Message = {
@@ -168,9 +141,9 @@ export default function ChatPage() {
         text: "Oops! Kuch technical issue aa gaya. Thoda time de do phir try karo Bhaiya!",
         isUser: false,
         timestamp: new Date(),
-        emotion: "sad",
       }
       setMessages((prev) => [...prev, botMessage])
+      showRandomEmotionImage()
     } finally {
       setIsTyping(false)
     }
@@ -182,8 +155,19 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-purple-900 overflow-hidden">
       <Header />
+
+      {/* Emotion Image Animation */}
+      {activeEmotionImage && (
+        <div className={`fixed right-8 bottom-1/3 z-50 transition-all duration-1000 ease-in-out ${isImageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <img 
+            src={activeEmotionImage.src} 
+            alt={activeEmotionImage.alt}
+            className="w-80 h-80 object-contain"
+          />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 py-6 max-w-6xl mt-20">
         <div className="grid lg:grid-cols-4 gap-6 h-[calc(100vh-160px)]">
@@ -193,7 +177,13 @@ export default function ChatPage() {
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12 bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg">
-                    <AvatarFallback className="text-white font-bold">RN</AvatarFallback>
+                    <AvatarFallback className="text-white font-bold">
+                      <img 
+                        src="/avatar.png" 
+                        alt="Rohit Bhaiya"
+                        className="w-full h-full object-cover"
+                      />
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <h3 className="font-semibold text-white">Rohit Bhaiya</h3>
@@ -227,7 +217,12 @@ export default function ChatPage() {
               </CardHeader>
               <CardContent className="pt-0 space-y-4">
                 <div className="space-y-2">
-                  {suggestedPrompts.map((prompt) => (
+                  {[
+                    { text: "Start DSA", icon: "🚀" },
+                    { text: "Explain Recursion", icon: "🔄" },
+                    { text: "Interview Tips", icon: "💼" },
+                    { text: "MERN Stack Guide", icon: "⚛️" },
+                  ].map((prompt) => (
                     <Button
                       key={prompt.text}
                       variant="ghost"
@@ -255,7 +250,6 @@ export default function ChatPage() {
           {/* Chat Area */}
           <div className="lg:col-span-3">
             <Card className="h-full flex flex-col bg-gray-800/80 border-purple-500/30 backdrop-blur-sm shadow-2xl">
-              {/* Chat Header */}
               <CardHeader className="border-b border-purple-500/20 bg-gray-800/50">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -271,7 +265,6 @@ export default function ChatPage() {
                 </div>
               </CardHeader>
 
-              {/* Messages */}
               <CardContent className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-800/30">
                 {messages.map((message) => (
                   <div
@@ -283,10 +276,22 @@ export default function ChatPage() {
                     >
                       <div className="flex flex-col items-center gap-1">
                         <Avatar
-                          className={`h-8 w-8 ${message.isUser ? "bg-purple-600" : "bg-gray-600/50 border border-purple-500/30"}`}
+                          className={`h-8 w-8 ${message.isUser ? "bg-gray-600" : "bg-gray-600/50 border border-purple-500/30"}`}
                         >
                           <AvatarFallback className="text-white text-xs font-medium">
-                            {message.isUser ? <User className="w-4 h-4" /> : "RN"}
+                            {message.isUser ? (
+                              <img 
+                                src="/kakashi.png" 
+                                alt="User"
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <img 
+                                src="/avatar.png" 
+                                alt="Rohit Bhaiya"
+                                className="w-full h-full object-cover"
+                              />
+                            )}
                           </AvatarFallback>
                         </Avatar>
                         {!message.isUser && <span className="text-xs text-purple-300 font-medium">Rohit Bhaiya</span>}
@@ -295,13 +300,13 @@ export default function ChatPage() {
                       <Card
                         className={`${
                           message.isUser
-                            ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white border-purple-400/50 shadow-lg"
+                            ? "bg-gray-700 text-white border-gray-600 shadow-lg"
                             : "bg-gray-700/80 border-purple-500/30 text-white shadow-lg"
                         } backdrop-blur-sm`}
                       >
                         <CardContent className="p-4">
                           <p className="text-sm leading-relaxed">{message.text}</p>
-                          <p className={`text-xs mt-2 ${message.isUser ? "text-purple-200" : "text-gray-400"}`}>
+                          <p className={`text-xs mt-2 ${message.isUser ? "text-gray-400" : "text-gray-400"}`}>
                             {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </CardContent>
@@ -345,7 +350,6 @@ export default function ChatPage() {
 
               <Separator className="bg-gray-700/50" />
 
-              {/* Input */}
               <CardContent className="p-6 bg-gray-800/50 border-t border-purple-500/20">
                 <form onSubmit={handleSubmit} className="flex gap-3">
                   <Input
