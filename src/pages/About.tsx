@@ -302,7 +302,7 @@ export default function AboutPage() {
                 </Button>
                 <Button size="lg" className="bg-pink-600 hover:bg-pink-700 text-white">
                   <Instagram className="w-5 h-5 mr-2" />
-                  @rohitnegi.codes
+                  @rohit_negi9
                 </Button>
                 <Button
                   size="lg"
