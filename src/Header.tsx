@@ -1,14 +1,14 @@
 
 import { useState } from "react"
-import {Link} from "react-router-dom"
-import { usePathname } from "next/navigation"
+import {Link,useLocation} from "react-router-dom"
+
 import { Menu, X, Code, Moon, Sun, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(true) // Default to dark mode
-  const pathname = usePathname()
+  const pathname = useLocation()
 
   const navigation = [
     { name: "Home", to: "/" },
@@ -17,7 +17,7 @@ export default function Header() {
     { name: "Contact", to: "/contact" },
   ]
 
-  const isActive = (to: string) => pathname === to
+  const isActive = (to: string) => location.pathname === to;
 
   return (
     <header className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
