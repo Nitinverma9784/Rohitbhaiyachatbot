@@ -77,7 +77,7 @@ export default function LandingPage() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400"
+                    className="border-purple-500/50 text-black hover:bg-purple-500/10 hover:border-purple-400 hover:text-white"
                   >
                     Learn More About Rohit
                   </Button>

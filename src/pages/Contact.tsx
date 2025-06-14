@@ -51,13 +51,13 @@ export default function ContactPage() {
     {
       icon: <Instagram className="w-5 h-5 text-pink-400" />,
       label: "Instagram",
-      value: "@rohitnegi.codes",
+      value: "@rohit_negi9",
       color: "bg-pink-500/10 border-pink-500/30",
     },
     {
       icon: <Globe className="w-5 h-5 text-blue-400" />,
       label: "Website",
-      value: "linktr.ee/rohitnegi.codes",
+      value: "https://www.coderarmy.in/",
       color: "bg-blue-500/10 border-blue-500/30",
     },
     {
