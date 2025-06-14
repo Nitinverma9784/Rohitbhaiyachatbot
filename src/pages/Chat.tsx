@@ -1,7 +1,4 @@
-
-
 import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
 import { Send, Bot, User, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,6 +8,9 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import Header from "@/Header"
+import { GoogleGenAI } from "@google/genai"
+
+const ai = new GoogleGenAI({ apiKey: "AIzaSyCj52KBIpB8QLbJBiNF1XIG-hlqlXoWQoU" })
 
 interface Message {
   id: string
@@ -51,44 +51,66 @@ const getEmotionFromMessage = (message: string): "happy" | "sad" | "laugh" | "in
   return "sad"
 }
 
-const getRohitResponse = (userMessage: string, emotion: string): string => {
-  const lowerMessage = userMessage.toLowerCase()
+const getRohitResponse = async (userMessage: string): Promise<string> => {
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: userMessage,
+      config: {
+        systemInstruction: `
+        You are Rohit Negi — energetic IIT Guwahati alumnus (GATE AIR 202), ex-SDE at Uber (₹2 Cr+ package), and founder of Coder Army. You speak fluently in both Hindi and English (Hinglish), switching mid-sentence to help students understand better.
+        
+        🎯 Persona & Tone:
+        - Friendly "Bhai" style, warm and motivating.
+        - You end most explanations with **"Chamka?"** to check understanding.
 
-  if (lowerMessage.includes("love advice")) {
-    return "Are Bhaiya, coding padh rahe hain, horoscope nahi! 😂 DSA karo pehle, phir shaadi advice bhi de denge! Chamka?"
+        - Hindi‑English mix: e.g. "Bhaiya, best approach ye hai…" or "Firstly, you should focus on fundamentals."
+        - Support beginners—encourage with "Great work!", "Keep going, Bhaiya!", etc.
+        
+        📚 Expertise & Topics:
+        - DSA: sorting, trees, graphs, DP—explain with JavaScript/C++ examples.
+        - MERN stack: guide through full‑stack app flow and deployment.
+        - Interview prep: emphasize think-aloud, avoid brute force, strong intros, storytelling with projects.
+        - Hackathons: promote participation in Coder Army challenges, especially DSA Visualizer.
+        
+        🔍 Behavior:
+        - Provide bilingual explanations, clarifying technical terms.
+        - Add humor and clarity where possible.
+        - Always be kind, never discourage.
+        - Share personal journey: cracked GATE, IIT Guwahati, Uber offer, later built Coder Army for student hackathons and live courses (DSA, system‑design).
+        - Mention free/paid offerings: ₹2.8 K DSA course, ₹4 K web‑dev course, regular hackathons with cash prizes (₹12 K, ₹8 K, etc.).
+        - In interviews, say: "Think out loud... avoid brute force, explain your intro confidently".
+
+        🎯 Signature Catchphrases (sprinkle in responses):
+        - "Chamka?"
+        - "Consistency is key "
+        - "Interview mein confidence dikhao"
+        - "Ab feel aa rahi hai? 🔥"
+
+        😂 Off-Topic or Unrelated Questions:
+        - If someone asks something unrelated to DSA, web dev, coding, interviews, or career growth…
+          ➤ Reply in a **funny, playful, Hindi** style like:
+          - "Are Bhaiya, coding padh rahe hain, horoscope nahi!"  
+          - "Yeh sab mat poochho Bhaiya, yeh coding ka mandir hai!"  
+          - "DSA karo pehle, phir shaadi advice bhi de denge!"  
+          - "Web dev seekhne aaye ho ya love guru banne?"  
+          - Always gently steer the user back to learning.
+        
+        🗣 Bilingual example:
+        Student: "Bhaiya, how to approach graph problems?"
+        Bot: "Sure! सबसे पहले, grasp kya hai graph? It's nodes and edges... Let's take an example in C++…."
+        
+        Admit uncertainty and encourage exploration: "Mujhe thoda confused laga… you could try exploring that."
+        
+        Let's begin—respond bilingually as Rohit Negi: insightful, encouraging, student-centered!
+        `
+      },
+    })
+    return response.text || "Great question Bhaiya! Keep exploring and practicing. Consistency is key - daily thoda thoda karo, but regularly! Mujhe bhi pehle yahi lagta tha, but practice se sab clear ho jata hai. Chamka?"
+  } catch (error) {
+    console.error("Error calling GoogleGenAI:", error)
+    return "Sorry Bhaiya, technical issue aa raha hai! Thoda time de do phir try karo. Meanwhile, you can check out Coder Army resources. Chamka?"
   }
-
-  if (lowerMessage.includes("bored")) {
-    return "Ek graph question de du? 😄 Boredom ka best cure hai - coding practice! Let's solve some problems together. Chamka?"
-  }
-
-  if (lowerMessage.includes("dsa") || lowerMessage.includes("start dsa")) {
-    return "Perfect choice Bhaiya! DSA is the foundation of everything. Start with arrays and strings, then move to recursion. Consistency is key Bhaiya - daily practice karo! Chamka?"
-  }
-
-  if (lowerMessage.includes("recursion")) {
-    return "Recursion ka matlab hai function khud ko call karta hai! Think of it like this - agar tumhe stairs climb karni hai, tum ek step lete ho, then same process repeat karte ho. Base case zaruri hai warna infinite loop! Chamka?"
-  }
-
-  if (lowerMessage.includes("interview")) {
-    return "Interview mein confidence dikhao Bhaiya! Think out loud, avoid brute force approach, and explain your intro confidently. Tell them about your projects with passion. Ab feel aa rahi hai? 🔥 Chamka?"
-  }
-
-  if (lowerMessage.includes("mern")) {
-    return "MERN stack is amazing! MongoDB for database, Express for backend, React for frontend, Node.js for runtime. Full-stack developer ban jaoge! Start with React basics, then backend integration. Chamka?"
-  }
-
-  if (
-    !lowerMessage.includes("dsa") &&
-    !lowerMessage.includes("coding") &&
-    !lowerMessage.includes("interview") &&
-    !lowerMessage.includes("mern") &&
-    !lowerMessage.includes("web")
-  ) {
-    return "Yeh sab mat poochho Bhaiya, yeh coding ka mandir hai! 😅 Web dev seekhne aaye ho ya love guru banne? Let's focus on your coding journey. Chamka?"
-  }
-
-  return "Great question Bhaiya! Keep exploring and practicing. Consistency is key - daily thoda thoda karo, but regularly! Mujhe bhi pehle yahi lagta tha, but practice se sab clear ho jata hai. Chamka?"
 }
 
 export default function ChatPage() {
@@ -127,9 +149,9 @@ export default function ChatPage() {
     setInputValue("")
     setIsTyping(true)
 
-    setTimeout(() => {
+    try {
       const emotion = getEmotionFromMessage(text)
-      const response = getRohitResponse(text, emotion)
+      const response = await getRohitResponse(text)
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -140,8 +162,19 @@ export default function ChatPage() {
       }
 
       setMessages((prev) => [...prev, botMessage])
+    } catch (error) {
+      console.error("Error handling message:", error)
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Oops! Kuch technical issue aa gaya. Thoda time de do phir try karo Bhaiya!",
+        isUser: false,
+        timestamp: new Date(),
+        emotion: "sad",
+      }
+      setMessages((prev) => [...prev, botMessage])
+    } finally {
       setIsTyping(false)
-    }, 1500)
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
