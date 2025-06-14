@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(true) // Default to dark mode
-  const pathname = useLocation()
+  const pathname = useLocation().pathname
 
   const navigation = [
     { name: "Home", to: "/" },
@@ -16,8 +16,8 @@ export default function Header() {
     { name: "About", to: "/about" },
     { name: "Contact", to: "/contact" },
   ]
-
-  const isActive = (to: string) => location.pathname === to;
+  
+  const isActive = (to: string) => pathname === to
 
   return (
     <header className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
