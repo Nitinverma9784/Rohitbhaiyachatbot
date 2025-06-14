@@ -87,9 +87,9 @@ export default function ContactPage() {
       color: "bg-green-500/10 border-green-500/30",
     },
     {
-      question: "Can I get 1-on-1 mentorship?",
+      question: "Can I get my code reviewed?",
       answer:
-        "Limited slots available for premium students. Apply through the contact form with your specific requirements.",
+        "Share your GitHub repos or code snippets in our community. Rohit Bhaiya and senior members provide detailed feedback to help you improve. Chamka?",
       color: "bg-yellow-500/10 border-yellow-500/30",
     },
   ]
