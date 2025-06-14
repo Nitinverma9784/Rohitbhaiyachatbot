@@ -11,7 +11,6 @@ import Header from "@/Header"
 import { GoogleGenAI } from "@google/genai"
 
 const ai = new GoogleGenAI({ apiKey: "AIzaSyCj52KBIpB8QLbJBiNF1XIG-hlqlXoWQoU" })
-
 interface Message {
   id: string
   text: string
