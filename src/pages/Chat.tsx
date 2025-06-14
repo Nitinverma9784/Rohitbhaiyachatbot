@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
-import { Send, Bot, User, Sparkles } from "lucide-react"
+import { Send, Bot, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
