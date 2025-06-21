@@ -58,6 +58,9 @@ export default function Header() {
               >
                 {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </Button>
+              <Link to="https://www.coderarmy.in/">
+              
+             
               <Button
                 size="sm"
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all"
@@ -65,6 +68,7 @@ export default function Header() {
                 <Sparkles className="w-4 h-4 mr-2" />
                 Join Coder Army
               </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
